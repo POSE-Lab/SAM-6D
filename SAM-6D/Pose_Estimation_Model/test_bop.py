@@ -27,7 +27,8 @@ detetion_paths = {
     'lmo': '../Instance_Segmentation_Model/log/sam/result_lmo.json',
     'itodd': '../Instance_Segmentation_Model/log/sam/result_itodd.json',
     'icbin': '../Instance_Segmentation_Model/log/sam/result_icbin.json',
-    'hb': '../Instance_Segmentation_Model/log/sam/result_hb.json'
+    'hb': '../Instance_Segmentation_Model/log/sam/result_hb.json',
+    'industrial': '../Instance_Segmentation_Model/log/sam/result_industrial.json'
 }
 
 
@@ -233,7 +234,7 @@ if __name__ == "__main__":
         save_path = os.path.join(cfg.log_dir, dataset_name + '_eval_iter' + str(cfg.test_iter).zfill(6))
         if not os.path.isdir(save_path):
             os.makedirs(save_path)
-        save_path = os.path.join(save_path,'result_' + dataset_name +'.csv')
+        save_path = os.path.join(save_path,'result_' + dataset_name + '-test' + '.csv')
         test(model, cfg,  save_path, dataset_name, detetion_paths[dataset_name])
 
         print('saving to {} ...'.format(save_path))

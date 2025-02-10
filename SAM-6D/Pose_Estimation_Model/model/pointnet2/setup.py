@@ -8,29 +8,34 @@ from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 import glob
 
 _ext_src_root = "_ext_src"
-_ext_sources = glob.glob("{}/src/*.cpp".format(_ext_src_root)) + glob.glob(
-    "{}/src/*.cu".format(_ext_src_root)
-)
-_ext_headers = glob.glob("{}/include/*".format(_ext_src_root))
+_ext_sources = glob.glob(os.path.join(_ext_src_root, "src", "*.cpp")) + \
+               glob.glob(os.path.join(_ext_src_root, "src", "*.cu"))
+_ext_include_dirs = [os.path.abspath(os.path.join(_ext_src_root, "include"))]
+
+# Specify GCC 9 as the host compiler
+os.environ["CC"] = "/usr/bin/gcc-9"
+os.environ["CXX"] = "/usr/bin/g++-9"
 
 setup(
     name='pointnet2',
-    packages = find_packages(),
+    packages=find_packages(),
     ext_modules=[
         CUDAExtension(
             name='pointnet2._ext',
             sources=_ext_sources,
-            include_dirs = [os.path.join(_ext_src_root, "include")],
+            include_dirs=_ext_include_dirs,
             extra_compile_args={
-                # "cxx": ["-O2", "-I{}".format("{}/include".format(_ext_src_root))],
-                # "nvcc": ["-O2", "-I{}".format("{}/include".format(_ext_src_root))],
-                "cxx": [],
-                "nvcc": ["-O3", 
-                "-DCUDA_HAS_FP16=1",
-                "-D__CUDA_NO_HALF_OPERATORS__",
-                "-D__CUDA_NO_HALF_CONVERSIONS__",
-                "-D__CUDA_NO_HALF2_OPERATORS__",
-            ]},)
+                'cxx': ['-O2'],
+                'nvcc': [
+                    '-O3',
+                    '--compiler-options',
+                    '-fPIC',
+                    '-ccbin', '/usr/bin/gcc-9',
+                ],
+            }
+        )
     ],
-    cmdclass={'build_ext': BuildExtension.with_options(use_ninja=True)}
+    cmdclass={
+        'build_ext': BuildExtension.with_options(use_ninja=True)
+    }
 )

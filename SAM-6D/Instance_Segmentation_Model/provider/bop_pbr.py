@@ -34,7 +34,7 @@ class BOPTemplatePBR(BaseBOP):
         processing_config,
         level_templates,
         pose_distribution,
-        split="train_pbr",
+        split="test",
         min_visib_fract=0.8,
         max_num_scenes=10,  # not need to search all scenes since it is slow
         max_num_frames=1000,  # not need to search all frames since it is slow

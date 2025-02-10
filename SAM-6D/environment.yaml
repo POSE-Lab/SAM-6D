@@ -6,7 +6,7 @@ channels:
   - nvidia
   - defaults
 dependencies:
-  - pip
+  - pip==24.0
   - python=3.9.6
   - pip:
     - torch==2.0.0
@@ -15,6 +15,7 @@ dependencies:
     - xformers==0.0.18
     - torchmetrics==0.10.3
     - blenderproc==2.6.1
+    - numpy==1.26
     - opencv-python 
     # ISM 
     - omegaconf
